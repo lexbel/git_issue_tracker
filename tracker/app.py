@@ -3,7 +3,7 @@ import sys
 from flask import Flask
 from flask_injector import FlaskInjector
 
-from tracker.core.dependency import configure
+from tracker.dependency import configure
 from tracker.core.git_push_hook import account_api as git
 
 app = Flask(__name__)

@@ -9,6 +9,9 @@ __pycache__/
 **/out
 **/generated/
 **/classes/
+venv/*
+dist/*
+issue_fix_version_tracker_lexbel.egg-info/*
 *.ipr
 *.iws
 *.iml

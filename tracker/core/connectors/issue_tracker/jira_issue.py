@@ -1,9 +1,9 @@
 import logging
 import re
+from abc import abstractmethod
 
-from tracker.core import RefChangeRequest
 from tracker.core.connectors.issue_handler import IssueHandler
-from tracker.env import RELEASE_NUMBER_BRANCH_PATTERN
+from tracker.core.connectors.webhook_parser import RefChangeRequest
 
 logger = logging.getLogger("issue:handler")
 
@@ -11,11 +11,11 @@ logger = logging.getLogger("issue:handler")
 class JiraIssueHandler(IssueHandler):
 
     def handle(self, issues, request: RefChangeRequest):
-        search = re.search(RELEASE_NUMBER_BRANCH_PATTERN, request.ref_id)
-
         if len(issues) > 0:
-            # do anything you want with found issues
-            pass
+            self.process(issues, request)
         else:
             logger.info("issues not found")
 
+    @abstractmethod
+    def process(self, issues, request: RefChangeRequest):
+        pass

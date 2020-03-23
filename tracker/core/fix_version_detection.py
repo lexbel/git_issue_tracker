@@ -4,8 +4,8 @@ import re
 import git
 from git import Repo
 
-from tracker.core import RefChangeRequest
 from tracker.core.connectors.issue_handler import IssueHandler
+from tracker.core.connectors.webhook_parser import RefChangeRequest
 from tracker.env import GIT_USER_PASS, MERGE_PATTERN_SEARCH_TO_SKIP, ISSUE_TRACKER_PATTERN
 
 logger = logging.getLogger("git:repository:process")

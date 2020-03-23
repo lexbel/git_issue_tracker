@@ -1,9 +1,9 @@
 import logging
 
-from tracker.core import RefChangeRequest
-from tracker.core.connectors.webhook_parser import WebHookDataParser, ParseError
+from tracker.core.connectors.webhook_parser import WebHookDataParser, ParseError, RefChangeRequest
 
 logger = logging.getLogger("webhook-parser")
+
 
 class BitBucketHookParser(WebHookDataParser):
 
@@ -22,7 +22,7 @@ class BitBucketHookParser(WebHookDataParser):
         ref_id = changes["refId"].replace("refs/heads", "refs/remotes/origin")
 
         logger.info("Parsed request: {} {} {} {} {} {}".format(event_key, link, type, to_hash, from_hash, ref_id))
-        refRequest = RefChangeRequest(
+        ref_request = RefChangeRequest(
             repo_name=request["repository"]["name"],
             repo_link=link,
             update_type=type,
@@ -30,4 +30,4 @@ class BitBucketHookParser(WebHookDataParser):
             from_hash=from_hash,
             ref_id=ref_id
         )
-        return refRequest
+        return ref_request

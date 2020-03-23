@@ -3,7 +3,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 
 from flask import Blueprint, request, make_response
-from flask_inject import inject
+from injector import inject
 from jsonpickle import json
 
 from tracker.core.connectors.issue_handler import IssueHandler
