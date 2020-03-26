@@ -8,8 +8,8 @@ GIT_USER_PASS = {
 
 # Git properties
 TRACKED_BRANCH_REGEXP = os.getenv("TRACKED_BRANCH_REGEXP", "(release/.*|hotfix/.*|support/.*|develop|dev)")
-MERGE_PATTERN_SEARCH_TO_SKIP = os.getenv("MERGE_PATTERN_SEARCH_TO_SKIP", "Merge.*((release\/|support\/|hotfix\/)[0-9]{1}\.[0-9]{2,3}\.x|(tag .*)).*(develop|dev).*")
-WHITE_LISTED_REPOS = os.getenv("WHITE_LISTED_REPOS", "*".split(','))
+MERGE_PATTERN_SEARCH_TO_SKIP = os.getenv("MERGE_PATTERN_SEARCH_TO_SKIP", "Merge.*((release\/|support\/|hotfix\/)|(tag)).*(develop|dev).*")
+WHITE_LISTED_REPOS = os.getenv("WHITE_LISTED_REPOS", ".*")
 
 # Issue tracker properties
 ISSUE_TRACKER_PATTERN = os.getenv("ISSUE_TRACKER_PATTERN")
