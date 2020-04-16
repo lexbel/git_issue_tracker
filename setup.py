@@ -7,11 +7,11 @@ with open("VERSION", "r") as fh:
     version = fh.read().strip()
 
 setuptools.setup(
-    name="issue-fix-version-tracker-lexbel",
+    name="git-issue-tracker",
     version=version,
     author="Aleksandr Belyaev",
     author_email="lexbel89@gmail.com",
-    description="Issue fix version tracker",
+    description="Git issue tracker",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/lexbel/git_issue_tracker",
