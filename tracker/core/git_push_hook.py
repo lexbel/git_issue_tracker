@@ -24,7 +24,7 @@ def git_push_hook(webhook_parser: WebHookDataParser, handler: IssueHandler):
         return make_response("", 200)
 
     event_request = json.loads(data)
-    logger.info("Request {}".format(event_request))
+    logger.info("Request {}".format(json.dumps(event_request)))
     try:
         ref = webhook_parser.parse(event_request)
     except ParseError:
@@ -35,6 +35,6 @@ def git_push_hook(webhook_parser: WebHookDataParser, handler: IssueHandler):
         logger.info("Submit commit for processing")
         __git_pool__.submit(process_hook_data, ref, handler)
     else:
-        logger.info("This repo {} is not tracked".format(ref.ref_id))
+        logger.info("Either repo {} or branch {} is not tracked".format(ref.repo_name, ref.ref_id))
 
     return make_response("", 200)

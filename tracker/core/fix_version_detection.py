@@ -1,5 +1,6 @@
 import logging
 import re
+import shutil
 
 import git
 from git import Repo
@@ -17,34 +18,50 @@ def process_hook_data(request: RefChangeRequest, handler: IssueHandler):
         committed_issues = __find_merged_commits__(request)
         handler.handle(committed_issues, request)
     except Exception as e:
-        logger.error("Error has happened either on processing ref change or post hook", e)
+        logger.error("Error has happened either on processing ref change or post hook" + str(e))
 
 
 def __find_merged_commits__(request: RefChangeRequest) -> [str]:
-    r: Repo = None
-    repo_path = '/tmp/tracker_{}/.git'.format(request.repo_name)
-    try:
-        r = git.Repo(repo_path)
-    except Exception as e:
-        logger.error(e)
+    repo_path = '/tmp/tracker_{}'.format(request.repo_name)
 
-    if r is None:
-        logger.info("Cloning with GitPython over https with the username and token")
+    def checkout_repo(path):
+        r: Repo = None
         try:
-            r = git.Repo.clone_from("https://{}:{}@{}".format(
-                GIT_USER_PASS["username"],
-                GIT_USER_PASS["token"],
-                request.repo_link.split("https://")[1]), "/tmp/tracker_{}".format(request.repo_name))
+            r = git.Repo(path)
         except Exception as e:
             logger.error(e)
-    logger.info("Fetch changes from remote")
-    r.git.fetch()
+
+        if r is None:
+            logger.info("Cloning with GitPython over https with the username and token")
+            try:
+                r = git.Repo.clone_from("https://{}:{}@{}".format(
+                    GIT_USER_PASS["username"],
+                    GIT_USER_PASS["token"],
+                    request.repo_link.split("https://")[1]), path)
+            except Exception as e:
+                logger.error(e)
+        return r
+
+    repo = checkout_repo(repo_path)
+    try:
+        logger.info("Fetch changes from remote")
+        repo.git.fetch()
+    except Exception as e:
+        try:
+            logger.info("Remove folder with project due to error in git tree {}".format(repo_path))
+            shutil.rmtree(repo_path)
+        except OSError as e:
+            logger.error("Error: {} : {}".format(repo_path, e.strerror))
+        checkout_repo(repo_path)
+
     included_issues = set()
-    commits = r.git.log('--pretty=Commit: %h%nAuthor: %ce%nDate: %ci%n%n%s%n%b%n{}'.format(separator), '{}'.format(request.to_hash[:8]),
-                        '^{}'.format(request.from_hash[:8]))
+    commits = repo.git.log('--pretty=Commit: %h Date: %ci%nAuthor: %ce%n%n%s%n%b%n{}'.format(separator),
+                           '{}'.format(request.to_hash[:8]),
+                           '^{}'.format(request.from_hash[:8]))
     for commit_str in re.split("{}\n?".format(separator), commits):
         if re.search(MERGE_PATTERN_SEARCH_TO_SKIP, commit_str) is not None:
-            logger.info("Found merge commit which skip further processing. Pattern {}".format(MERGE_PATTERN_SEARCH_TO_SKIP))
+            logger.info(
+                "Found merge commit which skip further processing. Pattern {}".format(MERGE_PATTERN_SEARCH_TO_SKIP))
             logger.info(commit_str)
             break
         stripped_commit_msg = commit_str.strip()

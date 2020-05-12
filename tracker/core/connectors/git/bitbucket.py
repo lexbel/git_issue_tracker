@@ -8,9 +8,8 @@ logger = logging.getLogger("webhook-parser")
 class BitBucketHookParser(WebHookDataParser):
 
     def parse(self, request) -> RefChangeRequest:
-        logger.info("Request {}".format(request))
         if len(request["changes"]) == 0:
-            logger.info("Strange case, nothing was changed")
+            logger.info("Nothing was changed")
             raise ParseError()
 
         event_key = request["eventKey"]
