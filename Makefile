@@ -5,13 +5,17 @@ VERSION_FILE=VERSION
 
 all: build push clean
 
+test-deploy: build push-test clean
+
 build:
 	echo $(VERSION) >> ${VERSION_FILE}
 	python setup.py sdist bdist_wheel
-	rm $(VERSION_FILE)
 
 push-test:
-	python -m twine upload --repository-url $(PYPI_REPO) dist/*
+	twine upload --repository-url $(PYPI_REPO) dist/*
+
+push:
+	twine upload dist/*
 
 clean:
-	rm -rf build/ issue_fix_version_tracker_lexbel.egg-info dist/ __pycache__/
+	rm -rf build/ git_issue_tracker.egg-info dist/ __pycache__/ $(VERSION_FILE)
