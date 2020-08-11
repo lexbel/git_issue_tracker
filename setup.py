@@ -20,7 +20,7 @@ setuptools.setup(
         "injector==0.18.3",
         "Flask==1.1.1",
         "Flask-Injector==0.12.3",
-        "GitPython==3.1.0"],
+        "GitPython==3.1.7"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
