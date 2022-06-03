@@ -19,3 +19,9 @@ class IssueHandler(ABC):
     @abstractmethod
     def process(self, issues, request: RefChangeRequest):
         pass
+
+
+class DummyIssueHandler(IssueHandler):
+
+    def process(self, issues, request: RefChangeRequest):
+        pass

@@ -1,10 +1,10 @@
+import json
 import logging
 import re
 from concurrent.futures import ThreadPoolExecutor
 
 from flask import Blueprint, request, make_response
 from injector import inject
-from jsonpickle import json
 
 from tracker.core.connectors.issue_handler import IssueHandler
 from tracker.core.connectors.webhook_parser import WebHookDataParser, ParseError
