@@ -12,7 +12,7 @@ class GithubHookParser(WebHookDataParser):
             logger.info("Nothing was changed")
             raise ParseError()
 
-        link = request["repository"]["ssh_url"]
+        link = request["repository"]["clone_url"]
         to_hash = request["after"]
         from_hash = request["before"]
         repo_name = request["repository"]["name"]
