@@ -17,11 +17,11 @@ class GithubHookParser(WebHookDataParser):
         from_hash = request["before"]
         repo_name = request["repository"]["name"]
         if request['created']:
-            type = 'CREATED'
+            type = 'CREATE'
         elif request['deleted']:
-            type = 'DELETED'
+            type = 'DELETE'
         else:
-            type = 'UPDATED'
+            type = 'UPDATE'
         ref_id = request["ref"].replace("refs/heads", "refs/remotes/origin")
 
         logger.info("Parsed request: {} {} {} {} {} {}".format(repo_name, link, type, to_hash, from_hash, ref_id))

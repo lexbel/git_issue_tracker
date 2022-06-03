@@ -15,7 +15,7 @@ def process_hook_data(request: RefChangeRequest, handler: IssueHandler):
         committed_issues = __find_merged_commits__(request)
         handler.handle(committed_issues, request)
     except Exception as e:
-        logger.error("Error has happened either on processing ref change or post hook" + str(e))
+        logger.error("Error has happened either on processing ref change or post hook: " + str(e))
 
 
 def __find_merged_commits__(request: RefChangeRequest) -> [str]:

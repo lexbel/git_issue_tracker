@@ -11,7 +11,7 @@ __pycache__/
 **/classes/
 venv/*
 dist/*
-issue_fix_version_tracker_lexbel.egg-info/*
+git_issue_tracker.egg-info/*
 *.ipr
 *.iws
 *.iml
