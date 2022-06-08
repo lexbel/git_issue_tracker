@@ -8,8 +8,8 @@ all: build push clean
 test-deploy: build push-test clean
 
 build:
-	echo $(VERSION) >> ${VERSION_FILE}
-	python setup.py sdist bdist_wheel
+	echo $(VERSION) > ${VERSION_FILE}
+	python -m build
 
 push-test:
 	twine upload --repository-url $(PYPI_REPO) dist/*
